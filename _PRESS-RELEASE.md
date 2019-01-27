@@ -17,19 +17,19 @@ Once the project moves into development, the press release can be used as a touc
  -->
  
 ## Heading ##
-  > Name the product in a way the reader (i.e. your target customers) will understand.
+  > Stocks that break through their 200 day moving average.
 
 ## Sub-Heading ##
-  > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+  > For retail traders who want to be notified when their favorite stocks break support or resistance on 200-day moving price averages.
 
 ## Summary ##
-  > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
+  > Imagine you are a person busy with your career and family. You have a savings account in the bank, but you're disappointed with the 2% interest rate with which your bank rewards you. You want to invest a large portion of your savings into Blue Chip stocks like AAPL, AMZN, LMT, and UNH, but you want to buy these stocks at a discount,and you have no problem waiting. 200Day Moving average will allow you to add ticker symbols to a watchlist and be notified the moment that these stock prices go lower than their 200-day moving average price. 
 
 ## Problem ##
-  > Describe the problem your product solves.
+  > People who have money to invest in the stock market don't have the time to watch markets closely or learn fancy software like ETrade or thinkOrSwim. They can't trust stock brokers to have their best interst at heart either.
 
 ## Solution ##
-  > Describe how your product elegantly solves the problem.
+  > Now John Doe can focus on his family and his own career, and let [APP NAME] watch the markets for him. Since stocks like AAPL don't go on sale for very long, he wants to be notified the moment that AAPL goes below its 200-day moving average so he can pull the trigger and buy 100 shares. [APP NAME] makes this possible.
 
 ## Quote from You ##
   > A quote from a spokesperson in your company.

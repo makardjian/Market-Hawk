@@ -1,0 +1,33 @@
+Plan:
+  Server: 
+    /static files
+    /'tickersymbol/currentPrice'
+    /GET -> '/tickersymbol/200Average'
+    /POST -> '/tickersymbol' (post a ticker to your watchlist)
+    /Delete -> '/tickersymbol' (delete a ticker from your watchlist)
+  
+  Database:
+    /unique ID
+    /Date & time
+    /morning or Afternoon (API will be called once at 10amET and once at 3pmET)
+    /price
+    /200Average
+    /gap
+
+  Client Compoents:
+
+  VIEW 1
+    /watchlist
+      /stock
+        /price
+        /200average
+        /Gap
+    
+  VIEW 2
+    /Stock
+    /StatBox
+      /price
+      /200average
+      /Gap
+    /Graph of stock
+      /200 day moving avearge line
