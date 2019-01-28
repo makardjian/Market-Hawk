@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
+var uniqueValidator = require('mongoose-unique-validator');
 
 const tickerSchema = new mongoose.Schema({
-  id: {type: Number, index: true},
   symbol: {type: String, unique: true, index: true},
   name: String,
-  amPrice: Number,
-  pmPrice: Number,
+  price: Number,
   avg200Day: Number,
-  avg50Day: Number
+  avg50Day: Number,
 }); 
 
-let Ticker = mongoose.model('tickers', tickerSchema);
+tickerSchema.plugin(uniqueValidator);
 
-module.exports = Ticker;
+let Record = mongoose.model('tickers', tickerSchema);
+
+module.exports = Record;

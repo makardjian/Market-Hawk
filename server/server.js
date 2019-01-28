@@ -11,5 +11,7 @@ app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);  
 })
 
-app.post('/addToWatchList', db.addTicker);
+app.post('/addToWatchList', db.addTickerToWatchList);
+
+app.get('/refreshPrice/:symbol', db.refreshPrice)
 
