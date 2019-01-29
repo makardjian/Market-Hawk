@@ -2,6 +2,14 @@ const db = require('./mongo.js');
 const Record = require('./TickerModel.js');
 const exampleData = require('./exampleData.js');
 
+
+const getAllStocks = (req, res) => {
+  Record.find()
+  .then((data) => {
+    res.send(data);
+  })
+}
+
 //  POST -> gets fresh data for a given company and saves it to the DB.
 const addTickerToWatchList = (req, res) => {
   console.log('hello', req.body)
@@ -28,7 +36,6 @@ const addTickerToWatchList = (req, res) => {
     console.log(err);
   });
 }
-
 
 
 
@@ -85,13 +92,15 @@ const refreshPrice = (req, res) => {
 
       if (timeToSell.length) {
         res.send(`Alert! The price of ${ticker.toUpperCase()} has crossed beneath its 200-day moving average. Consider liquidating
-        any of short-term ${ticker.toUpperCase()} positions`);
+        any of your short-term ${ticker.toUpperCase()} positions`);
         return;
       }
 
       if (timeToBuy.length) {
         res.send(`Alert! The price of ${ticker.toUpperCase()} has crossed above its 200-day moving average. Now would be a good time to buy.`)
         return;
+      } else {
+        res.send('No alerts at this time')
       }
     });
   } 
@@ -103,6 +112,7 @@ const refreshPrice = (req, res) => {
 
 
 module.exports = {
+  getAllStocks,
   addTickerToWatchList,
   refreshPrice
 }
