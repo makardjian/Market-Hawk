@@ -23,17 +23,22 @@ const addTickerToWatchList = (req, res) => {
   let tickerInstance = new Record(freshData);
   tickerInstance.save()
   .then(() => {
+    let sendObject = {};
     if (freshData.avg200Day < freshData.price) {
-      res.send(`${freshData.symbol} has been added to your watchlist. We'll let
-        you know if the stock's price rises above its 200-day moving average!`)
+      sendObject.message = `${freshData.symbol} has been added to your watchlist. We'll let
+      you know if the stock's price falls below its 200-day moving average!!`;
+      sendObject.info = freshData;
+      res.send(sendObject)
     } else {
-      res.send(`${freshData.symbol} has been added to your watchlist. We'll let
-      you know if the stock's price falls below its 200-day moving average!`)
+      sendObject.message = `${freshData.symbol} has been added to your watchlist. We'll let
+      you know if the stock's price rises above its 200-day moving average!`
+      sendObject.info = freshData;
+      res.send(sendObject);
     }
   })
   .catch((err) => {
-    res.send(`Looks like ${freshData.symbol} is already on your watchlist.`)
-    console.log(err);
+    // alert(`Looks like ${freshData.symbol} is already on your watchlist.`);
+    res.send(err);
   });
 }
 

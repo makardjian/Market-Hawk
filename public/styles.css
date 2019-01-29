@@ -1,0 +1,40 @@
+body {
+  font-family: 'Work Sans', sans-serif;
+  background-color: #F5F5F5
+}
+
+#page-title {
+  text-align: center;
+  font-size: 48px;
+}
+
+#container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+table {
+  margin-right: 60px;
+  display: flex;
+  flex-direction: column
+}
+
+h2 {
+  margin-top: 0px;
+}
+
+.section-header {
+  text-decoration: underline;
+  font-size: 24px;
+  margin-bottom: 30px;
+}
+
+.add-stock-component {
+  margin-left: 60px;
+}
+
+#message {
+  display: inline-block;
+  max-width: 351.63px;
+}

@@ -15,7 +15,7 @@ app.listen(PORT, () => {
 
 app.get('/getAllStocks', db.getAllStocks)
 
-app.post('/addToWatchList', db.addTickerToWatchList);
+app.post('/addTickerToWatchList', db.addTickerToWatchList);
 
 app.get('/refreshPrice/:symbol', db.refreshPrice)
 

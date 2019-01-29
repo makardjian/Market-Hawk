@@ -4,7 +4,8 @@ import WatchListEntry from './WatchListEntry.jsx';
 function WatchList(props) {
   return (
     <table>
-      <caption>Your Current Watchlist</caption>
+      <caption className='section-header'>Your Current Watchlist</caption>
+      <tbody>
       <tr>
         <th>Ticker</th>
         <th>Price</th>
@@ -15,6 +16,7 @@ function WatchList(props) {
         return (<WatchListEntry entry={entry}/>)
       })
       }
+      </tbody>
     </table>
   )
 }
