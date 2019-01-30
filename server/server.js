@@ -19,3 +19,4 @@ app.post('/addTickerToWatchList', db.addTickerToWatchList);
 
 app.get('/refreshPrice/:symbol', db.refreshPrice)
 
+app.post('/realapidata', db.apiTest)

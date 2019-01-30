@@ -4,8 +4,17 @@ body {
 }
 
 #page-title {
-  text-align: center;
-  font-size: 48px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  margin-top: -170px;
+  margin-bottom: -150px;
+}
+
+.form {
+  display: flex;
+  justify-content: space-between;
 }
 
 #container {
@@ -17,7 +26,34 @@ body {
 table {
   margin-right: 60px;
   display: flex;
-  flex-direction: column
+  flex-direction: column;
+}
+
+tbody {
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  border-collapse: collapse
+}
+
+ td {
+  border-collapse: inherit;
+  border: 1px solid #ddd;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+th {
+  border: 1px solid #ddd;
+  padding-left: 50px;
+  padding-right: 50px;
+  font-size: 18px;
+  height: 50px;
+  text-align: center;
+  background-color: #F0F8FF;
+  border-collapse: collapse;
 }
 
 h2 {
@@ -25,7 +61,7 @@ h2 {
 }
 
 .section-header {
-  text-decoration: underline;
+  font: bolder; 
   font-size: 24px;
   margin-bottom: 30px;
 }
@@ -37,4 +73,9 @@ h2 {
 #message {
   display: inline-block;
   max-width: 351.63px;
+}
+
+.watchlist-entry {
+  padding-bottom: 20px;
+
 }

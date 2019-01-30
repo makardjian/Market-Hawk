@@ -9,7 +9,7 @@ function WatchList(props) {
       <tr>
         <th>Ticker</th>
         <th>Price</th>
-        <th>200D-MA</th>
+        <th>200 Day <br></br> Moving Average</th>
       </tr>
       {
       props.watchList.map(entry => {

@@ -20,7 +20,7 @@ class AddStock extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    let query = {symbol: this.state.input}
+    let query = {symbol: this.state.input.toLowerCase()}
     console.log(query)
 
     this.props.addTickerToWatchlist(query);
@@ -40,12 +40,10 @@ class AddStock extends React.Component {
       return (
         <div className='add-stock-component'>
           <div className='section-header'>Add a stock to your Watchlist</div>
-          <form onSubmit={this.handleSubmit}>
-            <label>
-              Ticker Symbol:
-              <input type='text' onChange={this.handleChange}></input>
-            </label>
-            
+          <form className='form' onSubmit={this.handleSubmit}>
+            <label>Ticker Symbol:</label>
+            <input type='text' onChange={this.handleChange}></input>
+            <button onClick={this.handleSubmit}>Add Stock</button>
           </form>
         </div>
       )
