@@ -18,17 +18,16 @@ class App extends React.Component {
     .then(data => {
       this.setState({
         watchList: data.data,
-      })
-    })
+      });
+    });
   }
 
   addTickerToWatchlist(query) {
     axios.post('/realapidata', query)
     .then(data => {
-      console.log(data)
-      
       if (data.data.info) {
         let newData = this.state.watchList.concat(data.data.info)
+        console.log(data.data.info, 'INFO')
         this.setState({
           watchList: newData,
           currentMessage: data.data.message
