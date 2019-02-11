@@ -36,3 +36,4 @@ bower_components/
 
 # Other
 webpack.config.js
+bundle.js
