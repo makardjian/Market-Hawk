@@ -1,119 +1,14 @@
-const db = require('./mongo.js');
 const Record = require('./TickerModel.js');
 const exampleData = require('./exampleData.js');
 const axios = require('axios');
 
 
-const getAllStocks = (req, res) => {
+const getAllTickers = (req, res) => {
   Record.find()
   .then((data) => {
     res.send(data);
   })
 }
-
-//  POST -> gets fresh data for a given company and saves it to the DB.
-const addTickerToWatchList = (req, res) => {
-  console.log('hello', req.body)
-  //Simulate an API call for a given ticker symbol where ExampleData is a fake version of real time prices
-  let freshData = exampleData[req.body.symbol];
-  if (!freshData) {
-    let sendObject = {};
-    sendObject.message = `${req.body.symbol.toUpperCase()} is not a valid ticker symbol. Please try again.`;
-    res.send(sendObject);
-    return;
-  }
-
-  let tickerInstance = new Record(freshData);
-  tickerInstance.save()
-  .then(() => {
-    let sendObject = {};
-    if (freshData.avg200Day < freshData.price) {
-      sendObject.message = `${freshData.symbol} has been added to your watchlist. We'll let
-      you know if the stock's price falls below its 200-day moving average!!`;
-      sendObject.info = freshData;
-      res.send(sendObject)
-    } else {
-      sendObject.message = `${freshData.symbol} has been added to your watchlist. We'll let
-      you know if the stock's price rises above its 200-day moving average!`
-      sendObject.info = freshData;
-      res.send(sendObject);
-    }
-  })
-  .catch((err) => {
-    let sendObject ={};
-    if (err._message === 'tickers validation failed') {
-      sendObject.message = `Looks like ${freshData.symbol} is already on your watchlist.`
-      res.send(sendObject);
-      console.log(err._message);
-    }
-  });
-}
-
-const apiTest = (req, res) => {
-  console.log(req.body.symbol)
-  const ticker = req.body.symbol
-  let freshData ={};
-  let sendObject = {};
-
-  axios.get(`https://api.iextrading.com/1.0/stock/${ticker}/price`)
-  .then(data => {
-    freshData.price = data.data;
-    axios.get(`https://api.iextrading.com/1.0/stock/${ticker}/stats`)
-    .then((data) => {
-      let axiosData = data.data;
-
-      freshData.symbol = axiosData.symbol;
-      freshData.name = axiosData.companyName;
-      freshData.avg200Day = axiosData.day200MovingAvg.toFixed(2);
-      freshData.avg50Day = axiosData.day50MovingAvg.toFixed(2);
-
-      let tickerInstance = new Record(freshData);
-      tickerInstance.save()
-      .then(() => {
-        let sendObject = {};
-        if (freshData.avg200Day < freshData.price) {
-          sendObject.message = `${freshData.symbol} has been added to your watchlist. We'll let
-          you know if the stock's price falls below its 200-day moving average!!`;
-          sendObject.info = freshData;
-          res.send(sendObject)
-        } else {
-          sendObject.message = `${freshData.symbol} has been added to your watchlist. We'll let
-          you know if the stock's price rises above its 200-day moving average!`
-          sendObject.info = freshData;
-          res.send(sendObject);
-        }
-      })
-      .catch((err) => {
-        let sendObject ={};
-        if (err._message === 'tickers validation failed') {
-          sendObject.message = `Looks like ${freshData.symbol} is already on your watchlist.`
-          res.send(sendObject);
-          console.log(err._message);
-        }
-      });
-    });
-  });
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //  Twice a day the REFRESH PRICES API gets hit for every ticker on a user's list.
 const refreshPrice = (req, res) => {
@@ -186,8 +81,6 @@ const refreshPrice = (req, res) => {
 
 
 module.exports = {
-  getAllStocks,
-  addTickerToWatchList,
+  getAllTickers,
   refreshPrice,
-  apiTest,
 }

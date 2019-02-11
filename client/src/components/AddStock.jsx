@@ -21,7 +21,6 @@ class AddStock extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     let query = {symbol: this.state.input.toLowerCase()}
-    console.log(query)
 
     this.props.addTickerToWatchlist(query);
     this.setState({

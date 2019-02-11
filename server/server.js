@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
 const PORT = 3001;
+const mongoConnection = require('../db/mongo');
 const db = require('../db/TickerController.js');
-const bodyParser = require('body-parser')
+const iex = require('../helpers/iexApi.js');
+const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -13,10 +15,8 @@ app.listen(PORT, () => {
 })
 
 
-app.get('/getAllStocks', db.getAllStocks)
-
-app.post('/addTickerToWatchList', db.addTickerToWatchList);
+app.get('/dbTickers', db.getAllTickers)
 
 app.get('/refreshPrice/:symbol', db.refreshPrice)
 
-app.post('/realapidata', db.apiTest)
+app.post('/iexApiTickers', iex.fetchApiTicker)
