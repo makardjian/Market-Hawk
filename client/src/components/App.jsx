@@ -3,7 +3,7 @@ import axios from 'axios';
 import WatchList from './WatchList.jsx';
 import AddStock from './AddStock.jsx';
 
-class App extends React.Component {
+export default class App extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -11,10 +11,11 @@ class App extends React.Component {
       currentMessage: '',
     }
     this.addTickerToWatchlist = this.addTickerToWatchlist.bind(this);
+    this.clearMessage = this.clearMessage.bind(this);
   }
 
   componentDidMount() {
-    axios.get('/getAllStocks')
+    axios.get('/dbTickers')
     .then(data => {
       this.setState({
         watchList: data.data,
@@ -23,17 +24,16 @@ class App extends React.Component {
   }
 
   addTickerToWatchlist(query) {
-    axios.post('/realapidata', query)
+    axios.post('/iexApiTickers', query)
     .then(data => {
       if (data.data.info) {
-        let newData = this.state.watchList.concat(data.data.info)
-        console.log(data.data.info, 'INFO')
+        let newData = [...this.state.watchList];
+        newData = newData.concat(data.data.info)
         this.setState({
           watchList: newData,
           currentMessage: data.data.message
         })
       } else {
-        console.log(data)
         this.setState({
           currentMessage: data.data.message,
         })
@@ -41,19 +41,22 @@ class App extends React.Component {
     })
   }
 
+  clearMessage () {
+    this.setState({
+      currentMessage: '',
+    })
+  }
+
   render() {
     return (
       <div>
-        <img id='page-title' src='marketwatch-logo-vector-download.png' style={{}}/>
+        <img id='page-title' src='marketwatch-logo-vector-download.png'/>
         <div id='container'>
           <WatchList watchList={this.state.watchList}/>
           <AddStock addTickerToWatchlist={this.addTickerToWatchlist} 
-          currentMessage={this.state.currentMessage}/>
+          currentMessage={this.state.currentMessage} clearMessage={this.clearMessage}/>
         </div>
       </div>
     )
   }
 }
-
-export default App;
-

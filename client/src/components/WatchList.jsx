@@ -1,7 +1,7 @@
 import React from 'react';
 import WatchListEntry from './WatchListEntry.jsx';
 
-function WatchList(props) {
+const WatchList = (props) => {
   return (
     <table>
       <caption className='section-header'>Your Current Watchlist</caption>
@@ -21,4 +21,4 @@ function WatchList(props) {
   )
 }
 
-export default WatchList
+export default WatchList;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function WatchListEntry(props) {
+const WatchListEntry = (props) => {
   return (
     <tr className='watchlist-entry'>
       <td>{props.entry.symbol}</td>
