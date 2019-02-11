@@ -20,12 +20,15 @@ class AddStock extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    let { clearMessage, addTickerToWatchlist } = this.props;
+
+    clearMessage();
     let query = {symbol: this.state.input.toLowerCase()}
 
-    this.props.addTickerToWatchlist(query);
+    addTickerToWatchlist(query);
     this.setState({
       showMessage: !this.state.showMessage,
-    })
+    });
   }
 
   handleClick() {

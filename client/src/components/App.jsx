@@ -11,6 +11,7 @@ export default class App extends React.Component {
       currentMessage: '',
     }
     this.addTickerToWatchlist = this.addTickerToWatchlist.bind(this);
+    this.clearMessage = this.clearMessage.bind(this);
   }
 
   componentDidMount() {
@@ -40,6 +41,12 @@ export default class App extends React.Component {
     })
   }
 
+  clearMessage () {
+    this.setState({
+      currentMessage: '',
+    })
+  }
+
   render() {
     return (
       <div>
@@ -47,7 +54,7 @@ export default class App extends React.Component {
         <div id='container'>
           <WatchList watchList={this.state.watchList}/>
           <AddStock addTickerToWatchlist={this.addTickerToWatchlist} 
-          currentMessage={this.state.currentMessage}/>
+          currentMessage={this.state.currentMessage} clearMessage={this.clearMessage}/>
         </div>
       </div>
     )
