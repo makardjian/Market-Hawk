@@ -17,10 +17,14 @@ export default class App extends React.Component {
   componentDidMount() {
     axios.get('/dbTickers')
     .then(data => {
+      console.log(data.data, 'db data')
       this.setState({
         watchList: data.data,
       });
     });
+
+    let refreshPrices = setTimeout(this.refreshWatchlist.bind(this), 2000)
+
   }
 
   addTickerToWatchlist(query) {
@@ -45,6 +49,20 @@ export default class App extends React.Component {
     this.setState({
       currentMessage: '',
     })
+  }
+
+  refreshWatchlist () {
+    let freshWatchList = [...this.state.watchList] //make a shallow copy of this.state.watchList
+    freshWatchList.forEach((company, index) => {
+      axios.get(`/tickers/${company.symbol}`)
+      .then(data => {
+        data = data.data;
+        console.log(data, 'data that was sent back from server')
+      })
+    })
+
+    //figure out how to reset the state of the watchList inside the forEAch function so that the DOM updates
+    
   }
 
   render() {

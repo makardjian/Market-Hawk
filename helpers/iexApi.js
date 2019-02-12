@@ -15,7 +15,7 @@ const fetchApiTicker = (req, res) => {
 
     freshData.symbol = axiosData.symbol;
     freshData.name = axiosData.companyName;
-    freshData.avg200Day = axiosData.day200MovingAvg.toFixed(2);
+    freshData.avg200Day = axiosData.day200MovingAvg.toFixed(2)
     freshData.avg50Day = axiosData.day50MovingAvg.toFixed(2);
     let tickerInstance = new Record(freshData);
     return tickerInstance.save()
@@ -44,6 +44,46 @@ const fetchApiTicker = (req, res) => {
   });
 }
 
+
+
+
+const refreshTickerData = (req, res) => {
+  let upperCaseTicker = req.params.symbol;
+  let lowerCaseTicker = req.params.symbol.toLowerCase();
+  let target = {symbol: upperCaseTicker};
+  let freshData = {};
+  axios.get(`https://api.iextrading.com/1.0/stock/${lowerCaseTicker}/price`)
+  .then(data => {
+    freshData.price = Number(data.data.toFixed(2));
+
+    return axios.get(`https://api.iextrading.com/1.0/stock/${lowerCaseTicker}/stats`)
+  })
+  .then(data => {
+    let axiosData = data.data;
+    freshData.avg200Day = axiosData.day200MovingAvg.toFixed(2)
+    freshData.avg50Day = axiosData.day50MovingAvg.toFixed(2);
+
+    // console.log(freshData, 'freshData');
+    // console.log(target,'target')
+
+    return Record.findOneAndUpdate(target, freshData, {new: true})
+  })
+  .catch(err => {
+    console.log(err);
+  })
+  .then((freshRecord) => {
+    res.send(freshRecord);
+  })
+}
+
+
+
+
+
+
+
+
 module.exports = {
-  fetchApiTicker: fetchApiTicker
+  fetchApiTicker,
+  refreshTickerData,
 }
