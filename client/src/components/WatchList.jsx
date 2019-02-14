@@ -2,6 +2,7 @@ import React from 'react';
 import WatchListEntry from './WatchListEntry.jsx';
 
 const WatchList = (props) => {
+  console.log(props)
   return (
     <table>
       <caption className='section-header'>Your Current Watchlist</caption>
@@ -12,8 +13,8 @@ const WatchList = (props) => {
         <th>200 Day <br></br> Moving Average</th>
       </tr>
       {
-      props.watchList.map(entry => {
-        return (<WatchListEntry entry={entry}/>)
+      props.watchList.map((entry, index)=> {
+        return (<WatchListEntry entry={entry} previousEntry={props.previousList[index]}/>)
       })
       }
       </tbody>

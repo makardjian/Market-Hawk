@@ -48,24 +48,21 @@ const fetchApiTicker = (req, res) => {
 
 
 const refreshTickerData = (req, res) => {
-  let upperCaseTicker = req.params.symbol;
-  let lowerCaseTicker = req.params.symbol.toLowerCase();
+  let upperCaseTicker = req.params.symbol; //client normalizes all tickers to upper case to send to db as uppercase 
+  let lowerCaseTicker = req.params.symbol.toLowerCase(); //api takes a lowercase ticker
   let target = {symbol: upperCaseTicker};
   let freshData = {};
   axios.get(`https://api.iextrading.com/1.0/stock/${lowerCaseTicker}/price`)
   .then(data => {
-    freshData.price = Number(data.data.toFixed(2));
-
+    freshData.price = Number(data.data.toFixed(4));
     return axios.get(`https://api.iextrading.com/1.0/stock/${lowerCaseTicker}/stats`)
   })
   .then(data => {
     let axiosData = data.data;
-    freshData.avg200Day = axiosData.day200MovingAvg.toFixed(2)
-    freshData.avg50Day = axiosData.day50MovingAvg.toFixed(2);
+    freshData.avg200Day = axiosData.day200MovingAvg.toFixed(4)
+    freshData.avg50Day = axiosData.day50MovingAvg.toFixed(4);
 
-    // console.log(freshData, 'freshData');
-    // console.log(target,'target')
-
+    console.log(freshData, `fresh data for ${upperCaseTicker}`);
     return Record.findOneAndUpdate(target, freshData, {new: true})
   })
   .catch(err => {
