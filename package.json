@@ -20,6 +20,7 @@
   "homepage": "https://github.com/makardjian/hrsf108-mvp#readme",
   "dependencies": {
     "axios": "^0.18.0",
+    "bluebird": "^3.5.3",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "mongoose-unique-validator": "^2.0.2",
@@ -31,6 +32,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "mongoose": "^5.4.7",
+    "nodemon": "^1.18.10",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "webpack-cli": "^3.2.1"

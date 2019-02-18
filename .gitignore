@@ -28,12 +28,6 @@ dist/
 node_modules/
 bower_components/
 
-# Floobits
-.floo
-.floobit
-.floo
-.flooignore
-
 # Other
-webpack.config.js
 bundle.js
+App_notes.txt
