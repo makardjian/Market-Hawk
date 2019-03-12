@@ -5,9 +5,16 @@ const fetchApiTicker = (req, res) => {
   const ticker = req.body.symbol
   let freshData ={};
 
-  axios.get(`https://api.iextrading.com/1.0/stock/${ticker}/price`)
+  axios.get(`https://api.iextrading.com/1.0/stock/${ticker}/quote`)
   .then(data => {
-    freshData.price = data.data.toFixed(2);
+    let quoteData = data.data;
+    freshData.price = quoteData.iexRealtimePrice.toFixed(2);
+
+    if (quoteData.change >= 0) {
+      freshData.percentChange = `+${quoteData.change.toFixed(2)}%`;
+    } else {
+      freshData.percentChange = quoteData.change.toFixed(2) + '%';
+    }
     return axios.get(`https://api.iextrading.com/1.0/stock/${ticker}/stats`)
   })
   .then((data) => {
@@ -47,19 +54,27 @@ const fetchApiTicker = (req, res) => {
 
 
 
+
 const refreshTickerData = (req, res) => {
   let upperCaseTicker = req.params.symbol; //client normalizes all tickers to upper case to send to db as uppercase 
   let lowerCaseTicker = req.params.symbol.toLowerCase(); //api takes a lowercase ticker
   let target = {symbol: upperCaseTicker};
   let freshData = {};
-  axios.get(`https://api.iextrading.com/1.0/stock/${lowerCaseTicker}/price`)
+  axios.get(`https://api.iextrading.com/1.0/stock/${lowerCaseTicker}/quote`)
   .then(data => {
-    freshData.price = data.data.toFixed(2);
+    freshData.price = data.data.iexRealtimePrice.toFixed(2);
+
+    //add a + sign in front of the percentChange if it's positive
+    if (data.data.change >= 0) {
+      freshData.percentChange = `+${data.data.change.toFixed(2)}%`;
+    } else {
+      freshData.percentChange = data.data.change.toFixed(2) + '%';
+    }
+
     return axios.get(`https://api.iextrading.com/1.0/stock/${lowerCaseTicker}/stats`)
   })
   .then(data => {
     let axiosData = data.data;
-    console.log(axiosData, 'axiosData')
     freshData.avg200Day = axiosData.day200MovingAvg.toFixed(2)
     freshData.avg50Day = axiosData.day50MovingAvg.toFixed(2);
 

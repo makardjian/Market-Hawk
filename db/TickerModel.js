@@ -7,6 +7,7 @@ const tickerSchema = new mongoose.Schema({
   symbol: {type: String, unique: true, index: true},
   name: String,
   price: Number,
+  percentChange: String,
   avg200Day: Number,
   avg50Day: Number,
 }); 
