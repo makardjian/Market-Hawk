@@ -7,8 +7,9 @@ const WatchList = (props) => {
       <caption className='section-header'>Your Current Watchlist</caption>
       <tbody>
       <tr>
-        <th>Ticker</th>
-        <th>Price</th>
+        <th>Symbol</th>
+        <th>Last</th>
+        <th>%Change</th>
         <th>200 Day <br></br> Moving Average</th>
       </tr>
       {
