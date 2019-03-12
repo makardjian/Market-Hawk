@@ -14,6 +14,7 @@ export default class App extends React.Component {
     }
     this.addTickerToWatchlist = this.addTickerToWatchlist.bind(this);
     this.clearMessage = this.clearMessage.bind(this);
+    this.refreshWatchlist = this.refreshWatchlist.bind(this);
   }
 
   componentDidMount() {
@@ -23,7 +24,7 @@ export default class App extends React.Component {
         watchList: data.data,
       });
     });
-    this.refreshPrices = setInterval(this.refreshWatchlist.bind(this), 5000)
+    this.refreshPrices = setInterval(this.refreshWatchlist, 5000)
   }
 
   componentWillUnmount() {
@@ -43,9 +44,9 @@ export default class App extends React.Component {
       } else {
         this.setState({
           currentMessage: data.data.message,
-        })
+        });
       }
-    })
+    });
   }
 
   clearMessage () {
@@ -66,6 +67,7 @@ export default class App extends React.Component {
       let freshPrices = data.map(company => {
         return company.data
       })
+      console.log(freshPrices, 'freshprices')
       return freshPrices
     })
     .then(freshPrices => {

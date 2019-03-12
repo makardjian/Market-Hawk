@@ -7,7 +7,7 @@ const fetchApiTicker = (req, res) => {
 
   axios.get(`https://api.iextrading.com/1.0/stock/${ticker}/price`)
   .then(data => {
-    freshData.price = data.data;
+    freshData.price = data.data.toFixed(2);
     return axios.get(`https://api.iextrading.com/1.0/stock/${ticker}/stats`)
   })
   .then((data) => {
@@ -54,13 +54,14 @@ const refreshTickerData = (req, res) => {
   let freshData = {};
   axios.get(`https://api.iextrading.com/1.0/stock/${lowerCaseTicker}/price`)
   .then(data => {
-    freshData.price = Number(data.data.toFixed(4));
+    freshData.price = data.data.toFixed(2);
     return axios.get(`https://api.iextrading.com/1.0/stock/${lowerCaseTicker}/stats`)
   })
   .then(data => {
     let axiosData = data.data;
-    freshData.avg200Day = axiosData.day200MovingAvg.toFixed(4)
-    freshData.avg50Day = axiosData.day50MovingAvg.toFixed(4);
+    console.log(axiosData, 'axiosData')
+    freshData.avg200Day = axiosData.day200MovingAvg.toFixed(2)
+    freshData.avg50Day = axiosData.day50MovingAvg.toFixed(2);
 
     console.log(freshData, `fresh data for ${upperCaseTicker}`);
     return Record.findOneAndUpdate(target, freshData, {new: true})

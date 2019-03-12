@@ -1,7 +1,6 @@
 import React from 'react';
 
 const WatchListEntry = (props) => {
-  console.log(props, 'props')
 
   if (!props.previousEntry || props.entry.price === props.previousEntry.price) {
     return (

@@ -13,5 +13,4 @@ const getAllTickers = (req, res) => {
 
 module.exports = {
   getAllTickers,
-  refreshPrice,
 }
