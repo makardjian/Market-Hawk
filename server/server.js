@@ -7,16 +7,18 @@ const iex = require('../helpers/iexApi.js');
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/../public'))
 
 app.listen(PORT, () => {
-  console.log(`listening on port ${PORT}`);  
+  console.log(`listening on port ${PORT}`);
 })
 
 
 app.get('/dbTickers', db.getAllTickers)
 
-app.get('/tickers/:symbol', iex.refreshTickerData)
+app.get('/tickers/:symbol', async (req, res) => {
+  await iex.refreshTickerData(req, res);
+});
 
 app.post('/iexApiTickers', iex.fetchApiTicker)

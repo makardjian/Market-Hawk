@@ -61,37 +61,41 @@ const fetchApiTicker = (req, res) => {
 
 
 
-const refreshTickerData = (req, res) => {
+const refreshTickerData = async (req, res) => {
   let upperCaseTicker = req.params.symbol; //client normalizes all tickers to upper case to send to db as uppercase 
   let lowerCaseTicker = req.params.symbol.toLowerCase(); //api takes a lowercase ticker
   let target = { symbol: upperCaseTicker };
   let freshData = {};
-  axios.get(`https://cloud.iexapis.com/stable/stock/${lowerCaseTicker}/quote?displayPercent=true&token=${IEXKEY}`)
-    .then(({ data }) => {
-      let price = data.iexRealtimePrice ? data.iexRealtimePrice : data.delayedPrice;
-      freshData.price = price.toFixed(2);
 
-      if (data.change >= 0) {
-        freshData.percentChange = `+${(data.changePercent).toFixed(2)}%`;
-      } else {
-        let num = (data.changePercent).toFixed(2);
-        freshData.percentChange = `${num}%`;
-      }
+  try {
+    let quote = await axios.get(`https://cloud.iexapis.com/stable/stock/${lowerCaseTicker}/quote/?displayPercent=true&token=${IEXKEY}`);
+    quote = quote.data;
+    let price = quote.iexRealtimePrice ? quote.iexRealtimePrice : quote.delayedPrice;
+    freshData.price = price.toFixed(2);
+    if (quote.change >= 0) {
+      freshData.percentChange = `+${(quote.changePercent).toFixed(2)}%`;
+    } else {
+      let num = (quote.changePercent).toFixed(2);
+      freshData.percentChange = `${num}%`;
+    }
 
-      return axios.get(`https://cloud.iexapis.com/stable/stock/${lowerCaseTicker}/stats?token=${IEXKEY}`);
-    })
-    .then(({ data }) => {
-      freshData.avg200Day = data.day200MovingAvg.toFixed(2)
-      freshData.avg50Day = data.day50MovingAvg.toFixed(2);
+  } catch (e) {
+    console.error(e);
+  }
 
-      return Record.findOneAndUpdate(target, freshData, { new: true })
-    })
-    .catch(err => {
-      console.log(err);
-    })
-    .then((freshRecord) => {
-      res.send(freshRecord);
-    })
+  try {
+    let stats = await axios.get(`https://cloud.iexapis.com/stable/stock/${lowerCaseTicker}/stats?token=${IEXKEY}`);
+    stats = stats.data;
+    freshData.avg200Day = stats.day200MovingAvg.toFixed(2);
+    freshData.avg50Day = stats.day50MovingAvg.toFixed(2);
+    console.log({ freshData });
+    Record.findOneAndUpdate(target, freshData, { new: true })
+      .then(freshRecord => {
+        res.send(freshRecord);
+      });
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 module.exports = {
