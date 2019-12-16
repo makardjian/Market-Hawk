@@ -6,7 +6,10 @@ const fetchApiTicker = (req, res) => {
   const ticker = req.body.symbol
   let freshData = {};
 
-  axios.get(`https://cloud.iexapis.com/stock/${ticker}/quote`)
+  console.log('hello3333')
+  // something is wrong and the below console logs aren't loging on the server
+
+  axios.get(`https://cloud.iexapis.com/stable/stock/${ticker}/quote?token=${IEXKEY}`)
     .then(data => {
       let quoteData = data.data;
       freshData.price = quoteData.iexRealtimePrice.toFixed(2);
@@ -16,11 +19,11 @@ const fetchApiTicker = (req, res) => {
       } else {
         freshData.percentChange = quoteData.change.toFixed(2) + '%';
       }
-      return axios.get(`https://cloud.iexapis.com/stock/${ticker}/stats`)
+      return axios.get(`https://cloud.iexapis.com/stable/stock/${ticker}/stats?=${IEXKEY}`)
     })
     .then((data) => {
       let axiosData = data.data;
-
+      console.log('hello2')
       freshData.symbol = axiosData.symbol;
       freshData.name = axiosData.companyName;
       freshData.avg200Day = axiosData.day200MovingAvg.toFixed(2)
@@ -28,19 +31,21 @@ const fetchApiTicker = (req, res) => {
       let tickerInstance = new Record(freshData);
       return tickerInstance.save()
     })
-    .then(() => {
+    .then((data) => {
+      console.log({ data })
+      console.log('hello')
       let sendObject = {};
       if (freshData.avg200Day < freshData.price) {
         sendObject.message = `${freshData.symbol} has been added to your watchlist. We'll let
       you know if the stock's price falls below its 200-day moving average!!`;
         sendObject.info = freshData;
-        res.send(sendObject)
       } else {
         sendObject.message = `${freshData.symbol} has been added to your watchlist. We'll let
       you know if the stock's price rises above its 200-day moving average!`
         sendObject.info = freshData;
-        res.send(sendObject);
       }
+      console.log({ sendObject });
+      res.send(sendObject);
     })
     .catch((err) => {
       let sendObject = {};
@@ -61,26 +66,24 @@ const refreshTickerData = (req, res) => {
   let lowerCaseTicker = req.params.symbol.toLowerCase(); //api takes a lowercase ticker
   let target = { symbol: upperCaseTicker };
   let freshData = {};
-  axios.get(`https://cloud.iexapis.com/stable/stock/${lowerCaseTicker}/quote?token=${IEXKEY}`)
+  axios.get(`https://cloud.iexapis.com/stable/stock/${lowerCaseTicker}/quote?displayPercent=true&token=${IEXKEY}`)
     .then(({ data }) => {
-      console.log(data);
       let price = data.iexRealtimePrice ? data.iexRealtimePrice : data.delayedPrice;
       freshData.price = price.toFixed(2);
 
-      //add a + sign in front of the percentChange if it's positive
       if (data.change >= 0) {
-        freshData.percentChange = `+${data.change.toFixed(2)}%`;
+        freshData.percentChange = `+${(data.changePercent).toFixed(2)}%`;
       } else {
-        freshData.percentChange = data.change.toFixed(2) + '%';
+        let num = (data.changePercent).toFixed(2);
+        freshData.percentChange = `${num}%`;
       }
 
-      return axios.get(`https://cloud.iexapis.com/stable/stock/${lowerCaseTicker}/stats?token=${IEXKEY}`)
+      return axios.get(`https://cloud.iexapis.com/stable/stock/${lowerCaseTicker}/stats?token=${IEXKEY}`);
     })
     .then(({ data }) => {
       freshData.avg200Day = data.day200MovingAvg.toFixed(2)
       freshData.avg50Day = data.day50MovingAvg.toFixed(2);
 
-      console.log(freshData, `fresh data for ${upperCaseTicker}`);
       return Record.findOneAndUpdate(target, freshData, { new: true })
     })
     .catch(err => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import WatchListEntry from './WatchListEntry.jsx';
 
-const WatchList = (props) => {
+const WatchList = ({ watchList, previousList }) => {
   return (
     <table>
       <caption className='section-header'>Your Current Watchlist</caption>
@@ -13,12 +13,12 @@ const WatchList = (props) => {
           <th>200 Day <br></br> Moving Average</th>
         </tr>
         {
-          props.watchList.map((entry, index) => {
+          watchList.map((entry, index) => {
             return (
               <WatchListEntry
                 key={index}
                 entry={entry}
-                previousEntry={props.previousList[index]}
+                previousEntry={previousList[index]}
               />
             )
           })

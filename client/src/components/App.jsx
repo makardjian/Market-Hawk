@@ -81,6 +81,7 @@ export default class App extends React.Component {
 
   render() {
     const { watchList, previousList, currentMessage } = this.state;
+    // console.log({ watchList, previousList })
     return (
       <div>
         <img id='page-title' src='marketwatch-logo-vector-download.png' />
