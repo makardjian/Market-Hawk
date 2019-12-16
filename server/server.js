@@ -17,8 +17,6 @@ app.listen(PORT, () => {
 
 app.get('/dbTickers', db.getAllTickers)
 
-app.get('/tickers/:symbol', async (req, res) => {
-  await iex.refreshTickerData(req, res);
-});
+app.get('/tickers/:symbol', iex.refreshTickerData);
 
 app.post('/iexApiTickers', iex.fetchApiTicker)
